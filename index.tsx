@@ -11,7 +11,7 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    {/* FIX: Explicitly pass App as a children prop to AppProvider to resolve type error. */}
+    {/* FIX: Wrap the App component with AppProvider. This resolves the TypeScript error by providing the required 'children' prop and makes the application context available to all components within App. */}
     <AppProvider>
       <App />
     </AppProvider>

@@ -1,5 +1,5 @@
 
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, ReactNode } from 'react';
 import { translations } from '../lib/translations';
 
 type Theme = 'light' | 'dark';
@@ -18,17 +18,20 @@ interface AppContextType {
 
 export const AppContext = createContext<AppContextType | null>(null);
 
+const getInitialTheme = (): Theme => {
+  if (typeof window !== 'undefined') {
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'light' || storedTheme === 'dark') {
+      return storedTheme;
+    }
+  }
+  return 'dark'; // Default to dark theme
+};
+
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setThemeState] = useState<Theme>('dark');
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme());
   const [language, setLanguage] = useState<Language>('ar');
   const [page, setPage] = useState<Page>('home');
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem('theme') as Theme;
-    if (storedTheme) {
-      setThemeState(storedTheme);
-    }
-  }, []);
 
   const setTheme = (theme: Theme) => {
     setThemeState(theme);
